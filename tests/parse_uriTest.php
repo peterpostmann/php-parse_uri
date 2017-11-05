@@ -1,10 +1,10 @@
 <?php
 
-use function peterpostmann\parse_uri;
-use function peterpostmann\build_uri;
-use function peterpostmann\convert_url2urn;
+use function peterpostmann\uri\parse_uri;
+use function peterpostmann\uri\build_uri;
+use function peterpostmann\uri\convert_url2urn;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class Parse_uriTest extends \PHPUnit_Framework_TestCase
 {
     public function phpnetExampleUris()
     {
@@ -964,7 +964,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     function test_result_matches_expected_results($uri, $expectedResult)
     {
-        $this->assertSame($expectedResult, parse_uri($uri, peterpostmann\PARSE_URI_DEFAULT));
+        $this->assertSame($expectedResult, parse_uri($uri, peterpostmann\uri\PARSE_URI_DEFAULT));
     }
 
     /**
@@ -1446,7 +1446,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     function test_php_url_to_urn_auto_conversion_converts_positive_match($uri, $expectedResult)
     {
-        $result = parse_uri(convert_url2urn($uri), peterpostmann\PARSE_URI_DEFAULT);
+        $result = parse_uri(convert_url2urn($uri), peterpostmann\uri\PARSE_URI_DEFAULT);
 
         $this->assertSame($expectedResult, $result);
     }
@@ -1459,7 +1459,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     function test_php_url_to_urn_auto_conversion_does_not_converts_negative_match($uri, $expectedResult)
     {
-        $result = parse_uri(convert_url2urn($uri), peterpostmann\PARSE_URI_DEFAULT);
+        $result = parse_uri(convert_url2urn($uri), peterpostmann\uri\PARSE_URI_DEFAULT);
 
         $this->assertSame($expectedResult, $result);
     }
@@ -1469,7 +1469,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     function test_php_url_to_urn_conversion_converts_if_true($uri, $expectedResult)
     {
-        $result = parse_uri(convert_url2urn($uri, true), peterpostmann\PARSE_URI_DEFAULT);
+        $result = parse_uri(convert_url2urn($uri, true), peterpostmann\uri\PARSE_URI_DEFAULT);
 
 
         $this->assertSame($expectedResult, $result);
@@ -1480,7 +1480,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     function test_php_url_to_urn_conversion_does_not_converts_if_false($uri, $expectedResult)
     {
-        $result = parse_uri(convert_url2urn($uri, false), peterpostmann\PARSE_URI_DEFAULT);
+        $result = parse_uri(convert_url2urn($uri, false), peterpostmann\uri\PARSE_URI_DEFAULT);
 
         $this->assertNotEquals($expectedResult, $result);
     }

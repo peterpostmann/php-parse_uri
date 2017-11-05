@@ -1,6 +1,6 @@
 <?php
 
-namespace peterpostmann;
+namespace peterpostmann\uri;
 
 /**
  * Return default components (same as parse_urL)

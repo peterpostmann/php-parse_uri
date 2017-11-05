@@ -25,7 +25,7 @@ This function extends the capabailities of parse_url. It parses rfc complient UR
 ## Usage
 
 ~~~PHP
-use function peterpostmann\parse_uri;
+use function peterpostmann\uri\parse_uri;
 
 array parse_uri ( string uri [, int $component = -2 [, bool $convertUrlToUrn = null ]]) 
 
@@ -81,19 +81,19 @@ array (size=8)
 #### parse URIs
 
 ~~~PHP
-use function peterpostmann\parse_uri;
+use function peterpostmann\uri\parse_uri;
 
 echo "# URIs (with standard components)\n\n";
 
-var_dump(parse_uri('/path/to/file.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('relative/path/to/file.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('fileInCwd.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('C:/path/to/winfile.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('C:\path\to\winfile.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('\\\\smbserver\share\path\to\winfile.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('file:///path/to/file.ext', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('http://user:pass@example.org:8888/path/to/file', peterpostmann\PARSE_URI_DEFAULT));
-var_dump(parse_uri('news:comp.infosystems.www.servers.unix', peterpostmann\PARSE_URI_DEFAULT));
+var_dump(parse_uri('/path/to/file.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('relative/path/to/file.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('fileInCwd.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('C:/path/to/winfile.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('C:\path\to\winfile.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('\\\\smbserver\share\path\to\winfile.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('file:///path/to/file.ext', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('http://user:pass@example.org:8888/path/to/file', peterpostmann\uri\PARSE_URI_DEFAULT));
+var_dump(parse_uri('news:comp.infosystems.www.servers.unix', peterpostmann\uri\PARSE_URI_DEFAULT));
 
 echo "# URIs (with additional components)\n\n";
 
@@ -203,8 +203,8 @@ array (size=6)
 #### patch URIs
 
 ~~~PHP
-use function peterpostmann\parse_uri;
-use function peterpostmann\build_uri;
+use function peterpostmann\uri\parse_uri;
+use function peterpostmann\uri\build_uri;
 
 $uri = 'https://example.org/path/to/file?query#fragment':
 $patch = [ 'path' => '/path/to/otherfile']
@@ -252,7 +252,7 @@ The function creates a uri (string) from its components.
 
 ~~~PHP
 
-use function peterpostmann\build_uri;
+use function peterpostmann\uri\build_uri;
 
 echo build_uri([
           'scheme' => 'ssh2.sftp',
@@ -286,7 +286,7 @@ The function converts php URLs which are not real URLs to URNs (what they should
 
 
 ~~~PHP
-use function peterpostmann\build_uri;
+use function peterpostmann\uri\build_uri;
 
 echo convert_url2urn('data://text/plain;base64,SSBsb3ZlIFBIUAo=')."\n";
 echo convert_url2urn('zlib://archive.zip#dir/file.txt')."\n";
