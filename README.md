@@ -72,8 +72,9 @@ array (size=8)
 
 `_protocol` will return 
 - {schema} if present 
-- 'file' if it is an absolute path ('/path', 'C:\path')
-- false if ti is a file or relative path ('path/file', 'file')
+- 'file' if it is an absolute path ('/path')
+- false if it is a relative path ('path/file', 'file')
+- true if it is a Windows path ('C:\path')
 - null if there is no path
 
 ### Example

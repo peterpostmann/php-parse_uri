@@ -250,7 +250,7 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
                     'path' => 'C:\path\to\winfile.ext'
                 ],
                 false,
-                'file'
+                true
             ],
             [
                 'C:\path\to\winfile.ext',
@@ -258,7 +258,7 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
                     'path' => 'C:\path\to\winfile.ext'
                 ],
                 true,
-                'file'
+                true
             ],
             [
                 '\\\\smbserver\share\path\to\winfile.ext',
@@ -1112,7 +1112,7 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
                     'port' => null,
                     'user' => null,
                     'pass' => null,
-                    '_protocol' => 'file',
+                    '_protocol' => true,
                     '_userinfo' => null,
                     '_authority' => null,
                     '_document' => 'C:\file.php',

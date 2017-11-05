@@ -79,24 +79,24 @@ function parse_uri($uri, $component = null)
         $isSmbUri  = (isset($matches['is_smb_path']) && $matches['is_smb_path']);
 
         if ($isFileUri | $isWinUri | $isSmbUri) {
+            $protocol = 'file';
+            
             if ($isWinUri) {
                 $matches['path']   = str_replace('/', '\\', $matches['windows_path']);
+                $protocol          = true;
             }
             if ($isSmbUri) {
                 $matches['scheme'] = 'file';
                 $matches['path']   = str_replace('\\', '/', $matches['path']);
             }
-
-            // Decode
-            $matches['path'] = rawurldecode($matches['path']);
-
-            $document = $matches['path'];
             
+            $matches['path'] = rawurldecode($matches['path']);
+            $document        = $matches['path'];
+            
+            // Relative File
             if ($isFileUri && isset($document[0]) && $document[0] != '/') {
                 $protocol = false;
-            } else {
-                $protocol = 'file';
-            }
+            } 
         }
 
         // Convert port from string to int
