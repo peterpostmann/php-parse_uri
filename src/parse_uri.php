@@ -80,7 +80,8 @@ function parse_uri($uri, $component = null)
 
         if ($isFileUri | $isWinUri | $isSmbUri) {
             $protocol = 'file';
-            
+            $prefix   = '';
+
             if ($isWinUri) {
                 $matches['path']   = str_replace('/', '\\', $matches['windows_path']);
                 $protocol          = true;
@@ -88,20 +89,26 @@ function parse_uri($uri, $component = null)
             if ($isSmbUri) {
                 $matches['scheme'] = 'file';
                 $matches['path']   = str_replace('\\', '/', $matches['path']);
+                $prefix            = 'file://'.$matches['authority'];
             }
-            
+
             $matches['path'] = rawurldecode($matches['path']);
-            $document        = $matches['path'];
+            $document        = $prefix.$matches['path'];
             
             // Relative File
             if ($isFileUri && isset($document[0]) && $document[0] != '/') {
                 $protocol = false;
-            } 
+            }
         }
-
+        
         // Convert port from string to int
         if (isset($matches['has_port'])) {
             $matches['port'] = intval($matches['port']) ?: $matches['port'];
+        }
+
+        // Return empty path if URI is empty
+        if (empty($uri)) {
+            $matches['has_path'] = true;
         }
 
         $result = [];

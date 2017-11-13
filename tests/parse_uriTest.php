@@ -777,12 +777,14 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
             'empty string' => [
                 '',
                 [
+                    'path' => '',
                 ],
                 true
             ],
             'null' => [
                 null,
                 [
+                    'path' => '',
                 ],
                 false
             ],
@@ -945,6 +947,7 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
             'trim 2' => [
                 ' ',
                 [
+                    'path' => '',
                 ],
             ],
             'trim 3' => [
@@ -1118,6 +1121,29 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
                     '_document' => 'C:\file.php',
                     '_ressource' => 'C:\file.php?var1=val1&var2=val2',
                     '_uri' => 'C:\file.php?var1=val1&var2=val2#anchor'
+                ]
+            ],
+            [
+                '\\\\smbserver\share\path\to\winfile.ext?var1=val1&var2=val2#anchor',
+                [
+                    'scheme' => 'file',
+                    'host' => 'smbserver',
+                    'path' => '/share/path/to/winfile.ext',
+                    'query' => 'var1=val1&var2=val2',
+                    'fragment' => 'anchor'
+                ],
+                [    
+                    'port' => null,
+                    'user' => null,
+                    'pass' => null,
+                    'query' => null,
+                    'fragment' => null,
+                    '_protocol' => 'file',
+                    '_userinfo' => null,
+                    '_authority' => 'smbserver',
+                    '_document' => 'file://smbserver/share/path/to/winfile.ext',
+                    '_ressource' => 'file://smbserver/share/path/to/winfile.ext?var1=val1&var2=val2',
+                    '_uri' => 'file://smbserver/share/path/to/winfile.ext?var1=val1&var2=val2#anchor'
                 ]
             ]
         ];
