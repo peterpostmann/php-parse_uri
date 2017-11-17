@@ -35,7 +35,6 @@ function parse_uri($uri, $component = null)
             (?<has_path>
                 # match Windows Path like C:\
                 (
-                    (file:\/\/\/)?
                     (?<windows_path> [a-zA-Z]:(\/(?![\/])|\\\\)[^?]*)
                 )
                 #or
@@ -48,10 +47,23 @@ function parse_uri($uri, $component = null)
                     )?
                     (?<has_host>
                         (\/\/|(?<is_smb_path>\\\\\\\\))
-                        (?<authority>
-                            (?<has_user> (?<user> [^:^#@]*)? (?<has_pass>: (?<pass> [^@]*))? @ )?
-                            (?<host> ( \[ [^\]]+ \] | [^:^#\/\\\\]* ))
-                            (?<has_port> : (?<port> [0-9]+)? )?
+                        
+                        (
+                            # match Windows file Path like file:///C:/
+                            \/
+                            (?<windows_drive>
+                                [a-zA-Z]:\/
+                            )
+                            (?![\/])
+                            
+                        # or
+                        |
+                            # match authority
+                            (?<authority>
+                                (?<has_user> (?<user> [^:^#@]*)? (?<has_pass>: (?<pass> [^@]*))? @ )?
+                                (?<host> ( \[ [^\]]+ \] | [^:^#\/\\\\]* ))
+                                (?<has_port> : (?<port> [0-9]+)? )?
+                            )
                         )
                     )?
 
@@ -70,12 +82,23 @@ function parse_uri($uri, $component = null)
         $protocol = isset($matches['scheme']) ? $matches['scheme'] : '';
         $document = $matches['has_path'];
 
+        // Convert file:///C:/path to C:\path
+        $isWinFileUri = (isset($matches['windows_drive']) && $matches['windows_drive']);
+        
+        if ($isWinFileUri) {
+            $matches['has_scheme']   = false;
+            $matches['scheme']       = '';
+            $matches['has_host']     = false;
+            $matches['host']         = '';
+            $matches['windows_path'] = $matches['windows_drive'].$matches['path'];
+        }
+        
         // Add file-scheme to absolute/relative files
         $isFileUri = (isset($matches['has_path']) && isset($matches['path']) &&
                             $matches['has_path']  && $matches['has_path'] == $matches['path']);
 
         // Add file-scheme to Windows and smb URIs and replace slashes
-        $isWinUri  = (isset($matches['windows_path']) && $matches['windows_path']);
+        $isWinUri  = (isset($matches['windows_path'])  && $matches['windows_path']);
         $isSmbUri  = (isset($matches['is_smb_path']) && $matches['is_smb_path']);
 
         if ($isFileUri | $isWinUri | $isSmbUri) {
@@ -85,6 +108,11 @@ function parse_uri($uri, $component = null)
             if ($isWinUri) {
                 $matches['path']   = str_replace('/', '\\', $matches['windows_path']);
                 $protocol          = true;
+                
+                // # is a valid windows file-/dirname
+                if (isset($matches['has_fragment']) && (!isset($matches['has_query']) || !$matches['has_query'])) {
+                    $matches['has_query'] = true;
+                }
             }
             if ($isSmbUri) {
                 $matches['scheme'] = 'file';

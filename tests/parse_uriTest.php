@@ -928,6 +928,24 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
                     'path' => 'C:\ #%{}^`.txt'
                 ],
                 false
+            ],
+            'Windows file URI with fragment' => [
+                'file:///C:/path/file.ext#fragment',
+                [   
+                    'path'     => 'C:\path\file.ext',
+                    'query'    => '',
+                    'fragment' => 'fragment',
+                ],
+                false
+            ],
+            'Windows file URI with fragment and query' => [
+                'file:///C:/path/file.ext?query#fragment',
+                [   
+                    'path'     => 'C:\path\file.ext',
+                    'query'    => 'query',
+                    'fragment' => 'fragment',
+                ],
+                false
             ]
         ];
     }
@@ -977,7 +995,7 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
      */
     function test_reversal_matches_uri($uri, $expectedResult, $isReversible)
     {
-        if($isReversible) $this->assertSame($uri, build_uri($expectedResult));
+        if($isReversible) $this->assertSame(build_uri($expectedResult), $uri);
     }
 
     /**
@@ -1054,7 +1072,7 @@ class Parse_uriTest extends \PHPUnit_Framework_TestCase
      */
     function test_it_converts_fragments_correctly_if_windows_path($components, $expectedResult)
     {
-        $this->assertSame(build_uri($components), $expectedResult);
+        $this->assertSame($expectedResult, build_uri($components));
     }
 
     public function more_uri_components()
